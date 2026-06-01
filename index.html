@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FEO Perfumes | &#x641;&#x64A;&#x648; | Tienda de Fragancias Arabes de Lujo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Lato:wght@300;400;700&family=Georgia&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- CART OVERLAY & DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <span class="cart-title">&#9830; Tu Carrito FEO</span>
+    <button class="cart-close" onclick="closeCart()">&#10005;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">El carrito está vacío</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="ct-lbl">Total estimado</span>
+      <span class="ct-val" id="cartTotal">$0 COP</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Solicitar por WhatsApp &#128196;</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    <div class="m-icon" id="mIcon"></div>
+    <div class="m-brand" id="mBrand"></div>
+    <div class="m-ar" id="mAr"></div>
+    <div class="m-en" id="mEn"></div>
+    <div class="m-desc" id="mDesc"></div>
+    <div class="m-notes" id="mNotes"></div>
+    <div class="m-price" id="mPrice"></div>
+    <div class="m-btns">
+      <button class="btn-gold" onclick="addFromModal()">+ Agregar al Carrito</button>
+      <button class="btn-outline" onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">
+    <svg width="38" height="40" viewBox="0 0 120 130" fill="none">
+      <rect x="10" y="30" width="100" height="95" rx="3" stroke="#C6A868" stroke-width="6" fill="none"/>
+      <rect x="35" y="14" width="50" height="20" rx="3" stroke="#C6A868" stroke-width="5" fill="none"/>
+      <line x1="30" y1="30" x2="30" y2="125" stroke="#C6A868" stroke-width="5"/>
+      <line x1="90" y1="30" x2="90" y2="125" stroke="#C6A868" stroke-width="5"/>
+      <line x1="52" y1="55" x2="52" y2="105" stroke="#C6A868" stroke-width="4"/>
+      <line x1="68" y1="55" x2="68" y2="105" stroke="#C6A868" stroke-width="4"/>
+      <line x1="44" y1="70" x2="76" y2="70" stroke="#C6A868" stroke-width="4"/>
+      <line x1="44" y1="88" x2="64" y2="88" stroke="#C6A868" stroke-width="4"/>
+    </svg>
+    <div>
+      <div class="nav-logo-ar">&#x641;&#x64A;&#x648;</div>
+      <div class="nav-logo-sub">FEO &middot; Perfumer&iacute;a &Aacute;rabe de Lujo</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">Nosotros</a></li>
+    <li><a href="#shop">Tienda</a></li>
+    <li><a href="#mission">Misi&oacute;n</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <button class="nav-cart-btn" onclick="openCart()">
+    &#128722; Carrito <span class="cart-badge" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <img class="hero-logo" src="IMG_LOGO_HERE" width="140" height="150" alt="FEO Logo"
+       onerror="this.style.display='none'"/>
+  <div class="hero-ar">&#x641;&#x64A;&#x648;</div>
+  <div class="hero-en">F &middot; E &middot; O</div>
+  <div class="hero-tagline">&#x639;&#x637;&#x648;&#x631; &#x639;&#x631;&#x628;&#x64A;&#x629; &#x641;&#x627;&#x62E;&#x631;&#x629;</div>
+  <div class="hero-sub">Fragancias Endulzadoras de Olores &middot; Perfumer&iacute;a &Aacute;rabe de Lujo</div>
+  <div class="hero-cta">
+    <a href="#shop" class="btn-gold">Explorar Tienda</a>
+    <a href="#quiz" class="btn-outline">Encuentra tu Aroma &#10022;</a>
+  </div>
+  <div class="scroll-hint" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <span class="sec-label">Nuestra Historia</span>
+    <h2 class="sec-title">El Arte del <span>Aroma</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>FEO naci&oacute; con un prop&oacute;sito claro: llevar la esencia del mundo &aacute;rabe a cada momento del d&iacute;a. M&aacute;s que una fragancia, FEO es una experiencia sensorial que transforma el aire en un poema de aromas.</p>
+      <p>Inspirados en los perfumes del Oriente, nuestras fragancias endulzan cada espacio, cada ropa, cada piel con notas profundas de oud, &aacute;mbar, rosa de Damasco y almizle.</p>
+      <p>Somos perfumer&iacute;a &aacute;rabe <strong style="color:var(--gold)">aut&eacute;ntica, accesible y apasionada</strong> por el arte del olor.</p>
+    </div>
+    <div class="about-visual reveal">
+      <div class="av-ring av-r2"></div>
+      <div class="av-ring av-r1"></div>
+      <img class="about-img" src="IMG_LOGO_HERE" alt="FEO"
+           onerror="this.outerHTML='<div style=&quot;font-family:Scheherazade New,serif;font-size:4rem;color:#C6A868&quot;>&#x641;&#x64A;&#x648;</div>'"/>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section id="values">
+  <div class="reveal">
+    <span class="sec-label">Qui&eacute;nes Somos</span>
+    <h2 class="sec-title">Nuestros <span>Valores</span></h2>
+    <div class="sec-divider"></div>
+    <p style="text-align:center;margin-top:14px;font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.24);font-style:italic">"El aroma que eliges, dice qui&eacute;n eres"</p>
+  </div>
+  <div class="vals-grid">
+    <div class="val-card reveal">
+      <span class="val-icon">&#128142;</span>
+      <div class="val-title">Elegancia Accesible</div>
+      <p class="val-desc">Democratizamos el lujo &aacute;rabe, haciendo que la elegancia olfativa est&eacute; al alcance de todos.</p>
+    </div>
+    <div class="val-card reveal">
+      <span class="val-icon">&#127801;</span>
+      <div class="val-title">Amor Propio</div>
+      <p class="val-desc">Fomentamos la autoestima a trav&eacute;s del aroma. Tu fragancia es un reflejo de tu valor interior.</p>
+    </div>
+    <div class="val-card reveal">
+      <span class="val-icon">&#128332;</span>
+      <div class="val-title">Autenticidad &Aacute;rabe</div>
+      <p class="val-desc">Productos aut&eacute;nticos inspirados en la tradici&oacute;n milenaria del perfume &aacute;rabe oriental.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+  <div class="shop-hero-bar reveal">
+    <span class="sec-label">Colecci&oacute;n Exclusiva</span>
+    <h2 class="sec-title">Nuestra <span>Tienda</span> de Fragancias</h2>
+    <div class="sec-divider"></div>
+    <p style="text-align:center;margin-top:14px;font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.3)">19 fragancias &middot; Env&iacute;o a todo Colombia &middot; Pago seguro</p>
+  </div>
+  <div class="shop-search-row">
+    <div class="filters-row">
+      <span class="f-lbl">Filtrar:</span>
+      <button class="fbtn on" onclick="setFilter('all',this)">Todos</button>
+      <button class="fbtn" onclick="setFilter('armaf',this)">Armaf</button>
+      <button class="fbtn" onclick="setFilter('xerjoff',this)">Xerjoff</button>
+      <button class="fbtn" onclick="setFilter('lattafa',this)">Lattafa</button>
+      <button class="fbtn" onclick="setFilter('orientica',this)">Orientica</button>
+      <button class="fbtn" onclick="setFilter('afnan',this)">Afnan</button>
+      <button class="fbtn" onclick="setFilter('otros',this)">Otros</button>
+    </div>
+    <div class="shop-search">
+      <input type="text" id="searchInp" placeholder="Buscar fragancia..." oninput="renderGrid()"/>
+      <button onclick="renderGrid()">&#128269;</button>
+    </div>
+  </div>
+  <div class="sort-row">
+    <select class="sort-sel" id="sortSel" onchange="renderGrid()">
+      <option value="default">Ordenar: Destacados</option>
+      <option value="price-asc">Precio: Menor a Mayor</option>
+      <option value="price-desc">Precio: Mayor a Menor</option>
+      <option value="name">Nombre A-Z</option>
+      <option value="stock">Disponibilidad</option>
+    </select>
+    <span class="prod-count" id="prodCount">19 productos</span>
+  </div>
+  <div class="prod-grid" id="prodGrid"></div>
+</section>
+
+<!-- MISSION & VISION -->
+<section id="mission">
+  <div class="reveal">
+    <span class="sec-label">Prop&oacute;sito</span>
+    <h2 class="sec-title">Misi&oacute;n &amp; <span>Visi&oacute;n</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="mv-grid">
+    <div class="mv-card reveal">
+      <div class="mv-q">"</div>
+      <div class="mv-label">&#128047; Misi&oacute;n</div>
+      <p class="mv-text">Transformar cada momento en una expresi&oacute;n &uacute;nica de fragancia personal, ofreciendo perfumes &aacute;rabes que no solo perfuman, sino que definen el alma de quien los porta.</p>
+    </div>
+    <div class="mv-card reveal">
+      <div class="mv-q">"</div>
+      <div class="mv-label">&#11088; Visi&oacute;n</div>
+      <p class="mv-text">Ser la marca l&iacute;der en perfumer&iacute;a &aacute;rabe que inspire amor propio y confianza, convirti&eacute;ndonos en el compa&ntilde;ero olfativo perfecto para cada etapa de la vida.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="reveal">
+    <span class="sec-label">En N&uacute;meros</span>
+    <h2 class="sec-title">La <span>Experiencia</span> FEO</h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="stats-grid">
+    <div class="reveal"><div class="stat-num" data-target="500">0+</div><div class="stat-lbl">Clientes Satisfechos</div></div>
+    <div class="reveal"><div class="stat-num" data-target="19">0</div><div class="stat-lbl">Fragancias &Uacute;nicas</div></div>
+    <div class="reveal"><div class="stat-num" data-target="5">0</div><div class="stat-lbl">A&ntilde;os de Tradici&oacute;n</div></div>
+    <div class="reveal"><div class="stat-num" data-target="100">0%</div><div class="stat-lbl">Ingredientes Naturales</div></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="reveal">
+    <span class="sec-label">Interactivo</span>
+    <h2 class="sec-title">Encuentra tu <span>Aroma</span></h2>
+    <div class="sec-divider"></div>
+    <p style="text-align:center;margin-top:12px;color:rgba(255,255,255,.35);font-size:.8rem">3 preguntas &mdash; descubre tu fragancia FEO ideal</p>
+  </div>
+  <div class="quiz-wrap reveal" style="margin-top:36px">
+    <div class="quiz-prog">
+      <div class="qdot on" id="qd0"></div>
+      <div class="qdot" id="qd1"></div>
+      <div class="qdot" id="qd2"></div>
+    </div>
+    <div id="qs0">
+      <p class="q-question">&iquest;Qu&eacute; momento del d&iacute;a describe mejor tu esencia?</p>
+      <div class="q-opts">
+        <button class="q-opt" onclick="pick(this,0,'nocturno')"><span class="q-opt-icon">&#127769;</span>Noche misteriosa y profunda</button>
+        <button class="q-opt" onclick="pick(this,0,'diurno')"><span class="q-opt-icon">&#9728;&#65039;</span>Amanecer fresco y luminoso</button>
+        <button class="q-opt" onclick="pick(this,0,'atardecer')"><span class="q-opt-icon">&#127749;</span>Atardecer c&aacute;lido y dorado</button>
+        <button class="q-opt" onclick="pick(this,0,'mediodia')"><span class="q-opt-icon">&#10024;</span>Mediod&iacute;a brillante y vibrante</button>
+      </div>
+      <div class="q-nav"><button class="btn-gold" id="qn0" onclick="qNext(1)" style="opacity:.4;cursor:not-allowed">Siguiente &rarr;</button></div>
+    </div>
+    <div id="qs1" class="hidden">
+      <p class="q-question">&iquest;Qu&eacute; paisaje te inspira m&aacute;s?</p>
+      <div class="q-opts">
+        <button class="q-opt" onclick="pick(this,1,'desierto')"><span class="q-opt-icon">&#127964;&#65039;</span>Dunas doradas del desierto</button>
+        <button class="q-opt" onclick="pick(this,1,'jardin')"><span class="q-opt-icon">&#127807;</span>Jardines de rosas de Damasco</button>
+        <button class="q-opt" onclick="pick(this,1,'ciudad')"><span class="q-opt-icon">&#128332;</span>Z&oacute;calos y mezquitas hist&oacute;ricas</button>
+        <button class="q-opt" onclick="pick(this,1,'mar')"><span class="q-opt-icon">&#127754;</span>Costa del Golfo P&eacute;rsico</button>
+      </div>
+      <div class="q-nav">
+        <button class="btn-outline" onclick="qPrev(0)">&larr; Anterior</button>
+        <button class="btn-gold" id="qn1" onclick="qNext(2)" style="opacity:.4;cursor:not-allowed">Siguiente &rarr;</button>
+      </div>
+    </div>
+    <div id="qs2" class="hidden">
+      <p class="q-question">&iquest;Qu&eacute; sensaci&oacute;n buscas en un perfume?</p>
+      <div class="q-opts">
+        <button class="q-opt" onclick="pick(this,2,'poder')"><span class="q-opt-icon">&#128170;</span>Poder y presencia irresistible</button>
+        <button class="q-opt" onclick="pick(this,2,'romance')"><span class="q-opt-icon">&#128149;</span>Romance y seducci&oacute;n suave</button>
+        <button class="q-opt" onclick="pick(this,2,'calma')"><span class="q-opt-icon">&#129503;</span>Calma y paz interior</button>
+        <button class="q-opt" onclick="pick(this,2,'lujo')"><span class="q-opt-icon">&#128081;</span>Lujo y distinci&oacute;n exclusiva</button>
+      </div>
+      <div class="q-nav">
+        <button class="btn-outline" onclick="qPrev(1)">&larr; Anterior</button>
+        <button class="btn-gold" id="qn2" onclick="showRes()" style="opacity:.4;cursor:not-allowed">Ver mi Fragancia &#10022;</button>
+      </div>
+    </div>
+    <div id="qsR" class="hidden">
+      <div class="q-result">
+        <p style="font-size:.56rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px">Tu Fragancia Ideal</p>
+        <div style="font-size:3.5rem;margin-bottom:10px" id="rIcon">&#127769;</div>
+        <div class="res-ar" id="rAr"></div>
+        <div class="res-en" id="rEn"></div>
+        <p class="res-desc" id="rDesc"></p>
+      </div>
+      <div class="q-nav" style="margin-top:22px">
+        <button class="btn-outline" onclick="resetQ()">Reintentar</button>
+        <a href="#shop" class="btn-gold">Ver Colecci&oacute;n</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="reveal">
+    <span class="sec-label">Testimonios</span>
+    <h2 class="sec-title">Lo que Dicen <span>Nuestros Clientes</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="test-wrap">
+    <div class="testimonial active" id="t0">
+      <p class="test-text">"FEO transform&oacute; mi relaci&oacute;n con el perfume. El oud que llevan es absolutamente aut&eacute;ntico &mdash; me transporta a los zocos de Marrakech cada vez que lo uso."</p>
+      <div class="test-author">Valentina R.</div><div class="test-loc">Bogot&aacute;, Colombia</div>
+    </div>
+    <div class="testimonial" id="t1">
+      <p class="test-text">"Llevaba a&ntilde;os buscando un perfume &aacute;rabe genuino a precio accesible. FEO lo logr&oacute;. La Rosa de Damasco es mi favorita &mdash; suave, con estela que dura todo el d&iacute;a."</p>
+      <div class="test-author">Andr&eacute;s M.</div><div class="test-loc">Medell&iacute;n, Colombia</div>
+    </div>
+    <div class="testimonial" id="t2">
+      <p class="test-text">"Regal&eacute; el &Aacute;mbar del Desierto a mi esposo y fue el regalo m&aacute;s apreciado del a&ntilde;o. Cada vez que lo usa, la gente le pregunta qu&eacute; lleva puesto."</p>
+      <div class="test-author">Carolina L.</div><div class="test-loc">Barranquilla, Colombia</div>
+    </div>
+    <div class="testimonial" id="t3">
+      <p class="test-text">"Como apasionado de los perfumes orientales, puedo afirmar que la calidad de FEO es excepcional. El Oud es complejo, profundo y aut&eacute;ntico. Raramente lo veo a este precio."</p>
+      <div class="test-author">Karim A.</div><div class="test-loc">Cartagena, Colombia</div>
+    </div>
+    <div class="tdots" id="tdots"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <span class="sec-label">&Uacute;nete a FEO</span>
+    <h2 class="sec-title">Recibe el <span>Universo &Aacute;rabe</span></h2>
+    <div class="sec-divider"></div>
+    <p style="margin-top:16px;color:rgba(255,255,255,.35);font-size:.82rem;line-height:1.7">Suscr&iacute;bete y s&eacute; el primero en conocer nuevas fragancias, ediciones limitadas y rituales de aroma &aacute;rabe.</p>
+    <div class="nl-form">
+      <input type="email" class="nl-input" placeholder="tu@correo.com" id="nlInp"/>
+      <button class="nl-btn" onclick="subscribe()">Suscribirse</button>
+    </div>
+    <p class="nl-success" id="nlSuccess">&#10022; Bienvenido/a al universo FEO. El aroma que eliges, dice qui&eacute;n eres. &#10022;</p>
+    <div class="c-links">
+      <a href="mailto:info@feoperfumes.com" class="c-link">info@feoperfumes.com</a>
+      <a href="https://instagram.com/feo_perfumes" target="_blank" class="c-link">@feo_perfumes</a>
+      <span class="c-link">feoperfumes.com</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-ar">&#x641;&#x64A;&#x648;</div>
+  <div class="ft-sub">Fragancias Endulzadoras de Olores &middot; &#x639;&#x637;&#x648;&#x631; &#x639;&#x631;&#x628;&#x64A;&#x629; &#x641;&#x627;&#x62E;&#x631;&#x629;</div>
+  <ul class="ft-links">
+    <li><a href="#about">Nosotros</a></li>
+    <li><a href="#shop">Tienda</a></li>
+    <li><a href="#mission">Misi&oacute;n</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <p class="ft-copy">&copy; 2025 FEO &middot; Perfumer&iacute;a &Aacute;rabe de Lujo &middot; Colombia &middot; Todos los derechos reservados</p>
+</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
