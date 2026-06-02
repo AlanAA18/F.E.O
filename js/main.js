@@ -101,7 +101,7 @@ function renderGrid() {
       <div class="pc-img-wrap">
         ${bEl}
         <div class="stock-ind ${st.dot}"></div>
-        <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.parentNode.innerHTML+='<div style=\'font-size:3.5rem;position:absolute\'>${p.icon}</div>'"/>
+        <img src="${p.img}" alt="${p.name}" onerror="this.style.opacity='0'"/>
       </div>
       <div class="pc-body">
         <div class="pc-brand">${p.brand}</div>
@@ -186,13 +186,14 @@ function checkout() {
   const txt = encodeURIComponent('Hola! Quiero hacer un pedido en FEO Perfumes:\n' +
     items.map(i => `${i.brand} ${i.name} x${i.qty} — ${fmt(i.price*i.qty)}`).join('\n') +
     `\nTOTAL: ${fmt(items.reduce((s,i)=>s+i.price*i.qty,0))}`);
-  window.open('https://wa.me/573000000000?text=' + txt, '_blank');
+  window.open('https://wa.me/573052385890?text=' + txt, '_blank');
 }
 
 function openModal(id) {
   const p = PRODUCTS.find(x => x.id===id);
   modalProductId = id;
-  document.getElementById('mIcon').textContent = p.icon;
+  const mImgWrap = document.getElementById('mImgWrap');
+  mImgWrap.innerHTML = '<img src="' + p.img + '" alt="' + p.name + '" onerror="this.style.opacity=0"/>';
   document.getElementById('mBrand').textContent = p.brand;
   document.getElementById('mAr').textContent = p.arName;
   document.getElementById('mEn').textContent = p.name + ' · ' + p.vol;
@@ -213,72 +214,6 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-/* ---- QUIZ ---- */
-const answers = {};
-const quizResults = {
-  nocturno: {icon:'🌙', ar:'الليل الذهبي', en:'AL-LAYL AL-DHAHABI', desc:'Tu espíritu nocturno pide Oud premium con ámbar y almizcle profundo. Club de Nuit Intense Man o Khamrah Gold son tu firma perfecta.'},
-  diurno: {icon:'🌹', ar:'وردة دمشق', en:'WARDAT DIMASHQ', desc:'Tu energía luminosa se refleja en rosa de Damasco y almizcle blanco. Xerjoff Erba Pura o 9PM Red son tu fragancia ideal.'},
-  atardecer: {icon:'🔥', ar:'عنبر الصحراء', en:'ANBAR AL-SAHRA', desc:'Los atardeceres dorados viven en el Ámbar del Desierto. Royal Amber de Orientica o Asad Bourbon son perfectos para ti.'},
-  mediodia: {icon:'✨', ar:'نور الذهب', en:'NUR AL-DHAHAB', desc:'Tu energía vibrante merece Oud de primera con ámbar dorado. Club de Nuit Milestone o Bharara King Gold son tu elección.'}
-};
-
-function pick(btn, step, val) {
-  btn.closest('.q-opts').querySelectorAll('.q-opt').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  answers[step] = val;
-  const n = document.getElementById('qn'+step);
-  if(n) { n.style.opacity='1'; n.style.cursor='pointer'; }
-}
-function qNext(n) {
-  document.getElementById('qs'+(n-1)).classList.add('hidden');
-  document.getElementById('qs'+n).classList.remove('hidden');
-  document.getElementById('qd'+(n-1)).classList.remove('on');
-  document.getElementById('qd'+n).classList.add('on');
-}
-function qPrev(n) {
-  document.getElementById('qs'+(n+1)).classList.add('hidden');
-  document.getElementById('qs'+n).classList.remove('hidden');
-  document.getElementById('qd'+(n+1)).classList.remove('on');
-  document.getElementById('qd'+n).classList.add('on');
-}
-function showRes() {
-  const r = quizResults[answers[0]] || quizResults.nocturno;
-  document.getElementById('rIcon').textContent = r.icon;
-  document.getElementById('rAr').textContent = r.ar;
-  document.getElementById('rEn').textContent = r.en;
-  document.getElementById('rDesc').textContent = r.desc;
-  ['qs0','qs1','qs2'].forEach(s => document.getElementById(s).classList.add('hidden'));
-  document.getElementById('qsR').classList.remove('hidden');
-}
-function resetQ() {
-  Object.keys(answers).forEach(k => delete answers[k]);
-  document.getElementById('qsR').classList.add('hidden');
-  ['qs1','qs2'].forEach(s => document.getElementById(s).classList.add('hidden'));
-  document.getElementById('qs0').classList.remove('hidden');
-  document.querySelectorAll('.q-opt').forEach(b => b.classList.remove('sel'));
-  ['qn0','qn1','qn2'].forEach(id => { const el=document.getElementById(id); if(el){el.style.opacity='.4';el.style.cursor='not-allowed';}});
-  ['qd0','qd1','qd2'].forEach((id,i) => document.getElementById(id).classList.toggle('on', i===0));
-}
-
-/* ---- TESTIMONIALS ---- */
-let curT = 0;
-const TCOUNT = 4;
-const tdots = document.getElementById('tdots');
-for(let i=0;i<TCOUNT;i++) {
-  const d = document.createElement('div');
-  d.className = 'tdot' + (i===0?' on':'');
-  d.onclick = () => goT(i);
-  tdots.appendChild(d);
-}
-function goT(n) {
-  document.getElementById('t'+curT).classList.remove('active');
-  tdots.children[curT].classList.remove('on');
-  curT = n;
-  document.getElementById('t'+curT).classList.add('active');
-  tdots.children[curT].classList.add('on');
-}
-setInterval(() => goT((curT+1)%TCOUNT), 5000);
-
 /* ---- NAVBAR SCROLL ---- */
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
@@ -290,23 +225,6 @@ const revObs = new IntersectionObserver(entries => {
 }, {threshold: 0.1});
 document.querySelectorAll('.reveal').forEach(r => revObs.observe(r));
 
-/* ---- COUNTERS ---- */
-const cntObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(!e.isIntersecting) return;
-    const el = e.target, target = parseInt(el.dataset.target), dur = 1800;
-    const suffix = el.textContent.includes('%') ? '%' : el.textContent.includes('+') ? '+' : '';
-    let start = null;
-    (function step(ts) {
-      if(!start) start = ts;
-      const p = Math.min((ts-start)/dur, 1);
-      el.textContent = Math.round(p * target) + suffix;
-      if(p < 1) requestAnimationFrame(step);
-    })(performance.now());
-    cntObs.unobserve(el);
-  });
-}, {threshold: 0.5});
-document.querySelectorAll('.stat-num[data-target]').forEach(c => cntObs.observe(c));
 
 /* ---- PARTICLES ---- */
 const canvas = document.getElementById('particles');
@@ -326,15 +244,6 @@ for(let i=0;i<55;i++) parts.push({x:Math.random()*window.innerWidth,y:Math.rando
   });
   requestAnimationFrame(drawParts);
 })();
-
-/* ---- NEWSLETTER ---- */
-function subscribe() {
-  const v = document.getElementById('nlInp').value;
-  if(!v||!v.includes('@')) { showToast('Ingresa un correo válido'); return; }
-  document.getElementById('nlSuccess').style.display='block';
-  document.getElementById('nlInp').value='';
-  setTimeout(()=>document.getElementById('nlSuccess').style.display='none',6000);
-}
 
 /* ---- KEYBOARD ---- */
 document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeModal(); closeCart(); }});
